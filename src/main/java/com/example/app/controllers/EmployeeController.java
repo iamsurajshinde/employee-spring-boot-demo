@@ -28,7 +28,10 @@ public class EmployeeController {
     @PutMapping("/update")
     public boolean updateEmployees(@RequestBody Employee employee) {
         Optional<Employee> emp = employeeRepository.findById(employee.getId());
-        employeeRepository.save(emp.get());
-        return true;
+        if (emp.isEmpty()) {
+            employee.setId(0L);
+        }
+        employeeRepository.save(employee);
+        return emp.isPresent();
     }
 }
